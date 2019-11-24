@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Stairs
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - 
   - Ground
-  - 
+  - Stairs
   - 
   - 
   - 
@@ -48,6 +49,6 @@ TagManager:
   - name: Ground
     uniqueID: 2344118779
     locked: 0
-  - name: 
+  - name: Player
     uniqueID: 3405993979
     locked: 0
