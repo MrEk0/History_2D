@@ -16,12 +16,14 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
     Transform body;
+    Collider2D myCollider;
 
     float axisX;
     float axisY;
     float timeSinceJump = 0f;
     float xSpeed;
     float ySpeed;
+    float gravity;
 
     bool isJumping;
     bool canJump=true;
@@ -35,43 +37,47 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         body = transform.Find("BodyStructure");
         sprite = GetComponent<SpriteRenderer>();
+        myCollider = GetComponent<Collider2D>();
         xSpeed = playerSpeed;
+        gravity = rb.gravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
         axisX = Input.GetAxisRaw("Horizontal");
-        axisY = Input.GetAxisRaw("Vertical");
 
         FlipBody();
 
-        //if(axisY!=0 && canGoUp)
-        //{
-        //    ySpeed = upstairsSpeed;
-        //}
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Stairs"));
-        if(hit)
-        {
-            ySpeed = upstairsSpeed;
-        }
+        StaircaseMovement();
 
         Jump();
 
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            Crouch();
-        }
+        Crouch();
+
+    }
+
+ 
+
+  
+
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2(xSpeed * axisX, ySpeed * axisY);
+
+        animator.SetFloat("SpeedX", axisX);
+        animator.SetFloat("SpeedY", axisY);
     }
 
     private void Jump()
     {
-        isGroundTouched = Physics2D.OverlapCircle(feetPos.position, feetRadius, LayerMask.GetMask("Ground"));
+        if (!canJump)
+            return;
 
-        if (isGroundTouched)
+        if (myCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
-            jumpSpeed = 0;
-            if (Input.GetKeyDown(KeyCode.Space) && canJump)
+            axisY = 0f;
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 isJumping = true;
             }
@@ -80,10 +86,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && isJumping)
         {
             ySpeed = jumpSpeed;
+            axisY = 1;
             timeSinceJump += Time.deltaTime;
             if (timeSinceJump > jumpTime)
             {
-                ySpeed = -jumpSpeed;
+                axisY = -1;
                 isJumping = false;
                 timeSinceJump = 0f;
             }
@@ -92,19 +99,24 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             isJumping = false;
-            axisY = -1f;
+            axisY = -1;
         }
     }
-
-    private void FixedUpdate()
+    private void StaircaseMovement()
     {
-        rb.velocity = new Vector2(xSpeed * axisX, ySpeed * axisY);
-        //Debug.Log(rb.velocity);
-        //Debug.Log("yspeed  "+ySpeed);
-        //Debug.Log("axisY  "+axisY);
-
-        animator.SetFloat("SpeedX", axisX);
-        animator.SetFloat("SpeedY", axisY);
+        if (myCollider.IsTouchingLayers(LayerMask.GetMask("Stairs")))
+        {
+            axisY = Input.GetAxisRaw("Vertical");
+            canJump = false;
+            rb.gravityScale = 0f;
+            ySpeed = upstairsSpeed;
+        }
+        else
+        {
+            canJump = true;
+            rb.gravityScale = gravity;
+            ySpeed = 0f;
+        }
     }
 
     private void FlipBody()
@@ -124,39 +136,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void Crouch()
     {
-        if(!isCrouched)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            sprite.enabled = false;
-            body.gameObject.SetActive(true);
-            canJump = false;
-            animator.SetBool("isCrouch", true);
-            xSpeed = crouchSpeed;
-            isCrouched = true;
-        }
-        else
-        {
-            sprite.enabled = true;
-            body.gameObject.SetActive(false);
-            canJump = true;
-            animator.SetBool("isCrouch", false);
-            xSpeed = playerSpeed;
-            isCrouched = false;
+            if (!isCrouched)
+            {
+                sprite.enabled = false;
+                body.gameObject.SetActive(true);
+                canJump = false;
+                animator.SetBool("isCrouch", true);
+                xSpeed = crouchSpeed;
+                isCrouched = true;
+            }
+            else
+            {
+                sprite.enabled = true;
+                body.gameObject.SetActive(false);
+                canJump = true;
+                animator.SetBool("isCrouch", false);
+                xSpeed = playerSpeed;
+                isCrouched = false;
+            }
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if(collision.CompareTag("Stairs"))
-    //    {
-    //        canGoUp = true;
-    //    }
-    //}
-
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Stairs"))
-    //    {
-    //        canGoUp = false;
-    //    }
-    //}
 }
