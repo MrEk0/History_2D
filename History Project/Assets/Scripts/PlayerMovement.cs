@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float crouchSpeed = 3f;
     [SerializeField] float upstairsSpeed = 3f;
     [SerializeField] float jumpTime = 0.3f;
+    [SerializeField] Collider2D standCollider;
+    [SerializeField] Collider2D crouchCollider;
     [SerializeField] Transform feetPos;
     [SerializeField] float feetRadius = 0.5f;
 
@@ -16,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
     Transform body;
-    Collider2D myCollider;
+    //Collider2D myCollider;
 
     float axisX;
     float axisY;
@@ -37,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         body = transform.Find("BodyStructure");
         sprite = GetComponent<SpriteRenderer>();
-        myCollider = GetComponent<Collider2D>();
+        //myCollider = GetComponent<BoxCollider2D>();
         xSpeed = playerSpeed;
         gravity = rb.gravityScale;
     }
@@ -57,10 +59,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
- 
-
-  
-
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(xSpeed * axisX, ySpeed * axisY);
@@ -74,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         if (!canJump)
             return;
 
-        if (myCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        if (standCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             axisY = 0f;
             if (Input.GetKeyDown(KeyCode.Space))
@@ -104,7 +102,10 @@ public class PlayerMovement : MonoBehaviour
     }
     private void StaircaseMovement()
     {
-        if (myCollider.IsTouchingLayers(LayerMask.GetMask("Stairs")))
+        if (isCrouched)
+            return;
+
+        if (standCollider.IsTouchingLayers(LayerMask.GetMask("Stairs")))
         {
             axisY = Input.GetAxisRaw("Vertical");
             canJump = false;
@@ -141,18 +142,22 @@ public class PlayerMovement : MonoBehaviour
             if (!isCrouched)
             {
                 sprite.enabled = false;
+                standCollider.enabled = false;
+                crouchCollider.enabled = true;
                 body.gameObject.SetActive(true);
                 canJump = false;
-                animator.SetBool("isCrouch", true);
+                animator.SetBool("isCrouched", true);
                 xSpeed = crouchSpeed;
                 isCrouched = true;
             }
             else
             {
                 sprite.enabled = true;
+                crouchCollider.enabled = false;
+                standCollider.enabled = true;
                 body.gameObject.SetActive(false);
                 canJump = true;
-                animator.SetBool("isCrouch", false);
+                animator.SetBool("isCrouched", false);
                 xSpeed = playerSpeed;
                 isCrouched = false;
             }

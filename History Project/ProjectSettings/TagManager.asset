@@ -17,7 +17,7 @@ TagManager:
   - 
   - Ground
   - Stairs
-  - 
+  - Water
   - 
   - 
   - 
@@ -48,6 +48,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 2344118779
+    locked: 0
+  - name: Water
+    uniqueID: 1677566799
     locked: 0
   - name: Player
     uniqueID: 3405993979
