@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float upstairsSpeed = 3f;
     [SerializeField] float clutchSpeed = 3f;
 
-    [Header("")]
+    [Header("OtherSettings")]
     [SerializeField] float jumpTime = 0.3f;
     [SerializeField] Collider2D standCollider;
     [SerializeField] Collider2D crouchCollider;
@@ -127,22 +127,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void FlipBody()
     {
-        bool isMoving=Mathf.Abs(axisX) > Mathf.Epsilon;
+        //bool isMoving=Mathf.Abs(axisX) > Mathf.Epsilon;
 
-        if(isMoving)
+        //if(isMoving)
+        //{
+        //    transform.localScale = new Vector2(Mathf.Sign(axisX), 1f);
+        //}
+        if (axisX == -1)
         {
-            transform.localScale = new Vector2(Mathf.Sign(axisX), 1f);
+            body.localScale = new Vector3(-1, body.localScale.y, body.localScale.z);
+            sprite.flipX = true;
         }
-        //if (axisX == -1)
-        //{
-        //    body.localScale = new Vector3(-1, body.localScale.y, body.localScale.z);
-        //    sprite.flipX = true;
-        //}
-        //else if (axisX == 1)
-        //{
-        //    body.localScale = new Vector3(1, body.localScale.y, body.localScale.z);
-        //    sprite.flipX = false;
-        //}
+        else if (axisX == 1)
+        {
+            body.localScale = new Vector3(1, body.localScale.y, body.localScale.z);
+            sprite.flipX = false;
+        }
 
     }
 

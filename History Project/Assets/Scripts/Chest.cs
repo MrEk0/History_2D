@@ -6,7 +6,6 @@ public class Chest : MonoBehaviour
 {
     [SerializeField] GameObject clutchButton;
 
-    //public GameObject player { get; set; }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))
@@ -23,9 +22,8 @@ public class Chest : MonoBehaviour
         }
     }
 
-    //private void Update()
-    //{
-    //    if (player)
-    //        transform.position = player.transform.position;
-    //}
+    private void Update()
+    {
+        transform.localScale = new Vector3(1, 1, 1);
+    }
 }

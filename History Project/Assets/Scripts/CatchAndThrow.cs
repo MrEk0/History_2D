@@ -7,11 +7,20 @@ public class CatchAndThrow : MonoBehaviour
     [SerializeField] Transform hand;
     [SerializeField] float force = 10f;
 
-
+    float throwDirection;
     GameObject rubble;
 
     private void Update()
     {
+        if(GetComponent<SpriteRenderer>().flipX)
+        {
+            throwDirection = -1f;
+        }
+        else
+        {
+            throwDirection = 1f;
+        }
+
         Throw();
     }
 
@@ -45,7 +54,7 @@ public class CatchAndThrow : MonoBehaviour
     IEnumerator ThrowTheRubble()
     {
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Rock"), LayerMask.NameToLayer("Default"), true);
-        rubble.GetComponent<Rigidbody2D>().velocity = new Vector2(force*transform.localScale.x, 0f);
+        rubble.GetComponent<Rigidbody2D>().velocity = new Vector2(force*throwDirection, 0f);
         rubble.GetComponent<Rubble>().isThrown = true;
         yield return new WaitForSeconds(1f);
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Rock"), LayerMask.NameToLayer("Default"), false);
