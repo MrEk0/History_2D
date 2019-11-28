@@ -163,4 +163,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    Debug.Log(collision.gameObject.name);
+        
+    //    if (collision.IsTouchingLayers(LayerMask.GetMask("Water")))
+    //    {
+    //        Debug.Log("Death2");
+    //    }
+    //}
 }
