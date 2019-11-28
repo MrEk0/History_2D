@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Speed")]
     [SerializeField] float playerSpeed = 5f;
     [SerializeField] float jumpSpeed = 10f;
     [SerializeField] float crouchSpeed = 3f;
     [SerializeField] float upstairsSpeed = 3f;
+    [SerializeField] float clutchSpeed = 3f;
+
+    [Header("")]
     [SerializeField] float jumpTime = 0.3f;
     [SerializeField] Collider2D standCollider;
     [SerializeField] Collider2D crouchCollider;
@@ -19,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     SpriteRenderer sprite;
     Transform body;
     //Collider2D myCollider;
+    GameObject clutchedObj;
 
     float axisX;
     float axisY;
@@ -164,13 +169,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    Debug.Log(collision.gameObject.name);
-        
-    //    if (collision.IsTouchingLayers(LayerMask.GetMask("Water")))
-    //    {
-    //        Debug.Log("Death2");
-    //    }
-    //}
+    public void ClutchMovement(GameObject clutchObject)
+    {
+        clutchedObj = clutchObject;
+        clutchedObj.transform.parent = gameObject.transform;
+        xSpeed = clutchSpeed;
+    }
+    public void ReleaseObj()
+    {
+        clutchedObj.transform.parent = null;
+        clutchedObj = null;
+        xSpeed = playerSpeed;
+    }
 }
