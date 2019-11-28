@@ -9,6 +9,7 @@ public class Water : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            Time.timeScale = 0f;
             GameOverPanel.SetActive(true);
         }
     }

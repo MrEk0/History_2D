@@ -5,9 +5,10 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     [SerializeField] GameObject clutchButton;
+
+    //public GameObject player { get; set; }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.name);
         if(collision.gameObject.CompareTag("Player"))
         {
             clutchButton.SetActive(true);
@@ -21,4 +22,10 @@ public class Chest : MonoBehaviour
             clutchButton.SetActive(false);
         }
     }
+
+    //private void Update()
+    //{
+    //    if (player)
+    //        transform.position = player.transform.position;
+    //}
 }

@@ -127,16 +127,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void FlipBody()
     {
-        if (axisX == -1)
+        bool isMoving=Mathf.Abs(axisX) > Mathf.Epsilon;
+
+        if(isMoving)
         {
-            body.localScale = new Vector3(-1, body.localScale.y, body.localScale.z);
-            sprite.flipX = true;
+            transform.localScale = new Vector2(Mathf.Sign(axisX), 1f);
         }
-        else if (axisX == 1)
-        {
-            body.localScale = new Vector3(1, body.localScale.y, body.localScale.z);
-            sprite.flipX = false;
-        }
+        //if (axisX == -1)
+        //{
+        //    body.localScale = new Vector3(-1, body.localScale.y, body.localScale.z);
+        //    sprite.flipX = true;
+        //}
+        //else if (axisX == 1)
+        //{
+        //    body.localScale = new Vector3(1, body.localScale.y, body.localScale.z);
+        //    sprite.flipX = false;
+        //}
 
     }
 

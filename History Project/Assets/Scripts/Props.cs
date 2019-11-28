@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Props : MonoBehaviour
 {
     [SerializeField] GameObject Score;
+    [SerializeField] GameObject game;
     [SerializeField] int points = 10;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -13,6 +14,7 @@ public class Props : MonoBehaviour
         if(collision.CompareTag("Player"))
         {
             Destroy(gameObject);
+            game.GetComponent<WinCondition>().DestroyProps();
             Score.GetComponent<Score>().IncreaseScore(points);
         }
     }
