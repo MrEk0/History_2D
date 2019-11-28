@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Stairs
+  - Props
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - Ground
   - Stairs
-  - Water
+  - CameraBound
   - 
   - 
   - 
@@ -46,14 +47,17 @@ TagManager:
   - name: Background
     uniqueID: 2116099231
     locked: 0
+  - name: Props
+    uniqueID: 3884328729
+    locked: 0
   - name: Ground
     uniqueID: 2344118779
     locked: 0
-  - name: Water
-    uniqueID: 1677566799
-    locked: 0
   - name: Player
     uniqueID: 3405993979
+    locked: 0
+  - name: Water
+    uniqueID: 1677566799
     locked: 0
   - name: UI
     uniqueID: 3370537869

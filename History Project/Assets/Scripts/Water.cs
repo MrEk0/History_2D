@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Water : MonoBehaviour
 {
+    [SerializeField] GameObject GameOverPanel = null;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            Debug.Log("Death");
+            GameOverPanel.SetActive(true);
         }
     }
 }
