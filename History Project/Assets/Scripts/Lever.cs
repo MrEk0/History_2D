@@ -10,14 +10,16 @@ public class Lever : MonoBehaviour
     [SerializeField] float fadeTime = 2f;
 
     Animator animator;
-    float alpha;
+    Tilemap hidenTilemap;
+    //float alpha;
     Color color;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        alpha = hidenPlace.GetComponent<Tilemap>().color.a;
-        color = hidenPlace.GetComponent<Tilemap>().color;
+        hidenTilemap = hidenPlace.GetComponent<Tilemap>();
+        //alpha = hidenPlace.GetComponent<Tilemap>().color.a;
+        color = hidenTilemap.color;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,11 +51,12 @@ public class Lever : MonoBehaviour
 
     IEnumerator TileFade()
     {
-        while (!Mathf.Approximately(alpha, 0))
+        while (!Mathf.Approximately(color.a, 0))
         {
-            alpha = Mathf.MoveTowards(alpha, 0f, Time.deltaTime / fadeTime);
-            hidenPlace.GetComponent<Tilemap>().color = new Color(color.r, color.g, color.b, alpha);
-            //Debug.Log(color);
+            //alpha = Mathf.MoveTowards(alpha, 0f, Time.deltaTime / fadeTime);
+            color.a = Mathf.MoveTowards(color.a, 0f, Time.deltaTime / fadeTime);
+            //hidenPlace.GetComponent<Tilemap>().color = new Color(color.r, color.g, color.b, alpha);
+            hidenTilemap.color = color;
             yield return null;
         }
         hidenPlace.SetActive(false);
