@@ -9,18 +9,15 @@ public class CatchAndThrow : MonoBehaviour
 
     float throwDirection;
     GameObject rubble;
+    SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     private void Update()
     {
-        if(GetComponent<SpriteRenderer>().flipX)
-        {
-            throwDirection = -1f;
-        }
-        else
-        {
-            throwDirection = 1f;
-        }
-
         Throw();
     }
 
@@ -54,9 +51,21 @@ public class CatchAndThrow : MonoBehaviour
     IEnumerator ThrowTheRubble()
     {
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Rock"), LayerMask.NameToLayer("Default"), true);
-        rubble.GetComponent<Rigidbody2D>().velocity = new Vector2(force*throwDirection, 0f);
+        rubble.GetComponent<Rigidbody2D>().velocity = new Vector2(force*GetThrowDirection(), 0f);
         rubble.GetComponent<Rubble>().isThrown = true;
         yield return new WaitForSeconds(1f);
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Rock"), LayerMask.NameToLayer("Default"), false);
+    }
+
+    private float GetThrowDirection()
+    {
+        float throwDirection=1f;
+
+        if (spriteRenderer.flipX)
+        {
+            throwDirection = -1f;
+        }
+
+        return throwDirection;
     }
 }

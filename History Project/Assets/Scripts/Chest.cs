@@ -16,14 +16,8 @@ public class Chest : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            clutchButton.SetActive(false);
-        }
-    }
 
-    private void Update()
-    {
-        transform.localScale = new Vector3(1, 1, 1);
+        clutchButton.SetActive(false);
+
     }
 }

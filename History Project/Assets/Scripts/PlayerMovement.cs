@@ -22,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
     Transform body;
-    //Collider2D myCollider;
     GameObject clutchedObj;
 
     float axisX;
@@ -44,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         body = transform.Find("BodyStructure");
         sprite = GetComponent<SpriteRenderer>();
-        //myCollider = GetComponent<BoxCollider2D>();
         xSpeed = playerSpeed;
         gravity = rb.gravityScale;
     }
@@ -127,12 +125,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FlipBody()
     {
-        //bool isMoving=Mathf.Abs(axisX) > Mathf.Epsilon;
-
-        //if(isMoving)
-        //{
-        //    transform.localScale = new Vector2(Mathf.Sign(axisX), 1f);
-        //}
         if (axisX == -1)
         {
             body.localScale = new Vector3(-1, body.localScale.y, body.localScale.z);

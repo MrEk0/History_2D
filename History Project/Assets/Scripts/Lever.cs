@@ -11,14 +11,12 @@ public class Lever : MonoBehaviour
 
     Animator animator;
     Tilemap hidenTilemap;
-    //float alpha;
     Color color;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         hidenTilemap = hidenPlace.GetComponent<Tilemap>();
-        //alpha = hidenPlace.GetComponent<Tilemap>().color.a;
         color = hidenTilemap.color;
     }
 
@@ -32,18 +30,13 @@ public class Lever : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && button != null)
+        if ( button != null)
         {
             button.SetActive(false);
         }
     }
 
-    public void PushButton()
-    {
-        animator.SetTrigger("ButtonePushed");
-    }
-
-    public void OpenHidenPlace()
+    public void OpenHidenPlace()//animation event
     {
         Destroy(button);
         StartCoroutine(TileFade());
@@ -53,9 +46,7 @@ public class Lever : MonoBehaviour
     {
         while (!Mathf.Approximately(color.a, 0))
         {
-            //alpha = Mathf.MoveTowards(alpha, 0f, Time.deltaTime / fadeTime);
             color.a = Mathf.MoveTowards(color.a, 0f, Time.deltaTime / fadeTime);
-            //hidenPlace.GetComponent<Tilemap>().color = new Color(color.r, color.g, color.b, alpha);
             hidenTilemap.color = color;
             yield return null;
         }
